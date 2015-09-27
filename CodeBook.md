@@ -1,30 +1,20 @@
----
-title: "CodeBook"
-author: "Martin HEIN (m#)"
-date: "September 24th, 2015"
-output:
-  html_document:
-    toc: yes
-  pdf_document:
-    toc: yes
----
 **********
 
-# Data # {#data}
+# Data
 
-## Raw Data ## {#raw_data}
+## Raw Data
 
-### Introduction ### {#introduction}
+### Introduction
 
 One of the most exciting areas in all of data science right now is wearable computing - see for example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained from the [Machine Learning Repository at UCI's][harhome], and can be obtained from [here][hardata].
 
-### Background ### {#background}
+### Background
 
 The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (*WALKING*, *WALKING_UPSTAIRS*, *WALKING_DOWNSTAIRS*, *SITTING*, *STANDING*, *LAYING*) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
 
 The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. See **features_info.txt** for more details. 
 
-### Overview ### {#overview}
+### Overview
 
 The data set comprises several individual files.
 
@@ -84,7 +74,7 @@ Table: Supplementary Information
 
 **For the project at hand, only the base data set will be considered for analysis and processing.**
 
-## Messy Data ## {#messy_data}
+## Messy Data
 
 The messy data set is getting created by merging and processing the various elements of the base data set of the raw data. The result of this operation is stored in a R object of class _*data.table*_.
 
@@ -178,7 +168,7 @@ Table: Value ranges of variables
 
 Table: Sorting/matching key
 
-## Tidy Data ## {#tidy_data}
+## Tidy Data
 
 As an outcome of processing, filtering, and reshaping the messy data set the tidy data set is getting created. The result of this operation is stored in a R object of class _*data.table*_.
 
@@ -216,9 +206,9 @@ Table: Sorting/matching key
 
 **********
 
-# Transformation procedure # {#transformation_procedure}
+# Transformation procedure
 
-## Getting the raw data ## {#getting_raw_data}
+## Getting the raw data
 
 Getting the raw data is triggered from within the main script (_*```run_analysis.R```*_) by calling the function _*```dlDat```*_ (file _*```lib/dldat.R```*_).
 
@@ -228,7 +218,7 @@ Getting the raw data is triggered from within the main script (_*```run_analysis
 
 This function checks whether the archive has already been downloaded, and only if either explicitly requested (by means of function parameter), or not existing, the archive gets downloaded form the internet to the _*```data```*_ directory, and subsequently expanded, resulting in the [directory/file structure](#overview) as outlined above.
 
-## From raw data to messy data ## {#from_raw_to_messy_data}
+## From raw data to messy data
 
 After successfully [obtaining the raw data](#getting_raw_data), the main script (_*```run_analysis.R```*_) is executing the function _*```messyDat```*_ (file _*```lib/messydat.R```*_).
 
@@ -238,10 +228,10 @@ The outcome of this transformation is stored in the R object _*```dtMessy```*_ o
 
 Function _*```messyDat```*_ is executing a sequence of chained functions in order to arrive at the intended result.
 
-#. Step: merge raw data (mergeTestTrain() (file _*```lib/mergetesttrain.R```*_));
-#. Step: extract mean & standard deviation (extVars() (file _*```lib/extvars.R```*_));
-#. Step: replace activity id with activity label/name (repIdWithLbl() (file _*```lib/repidwithlbl.R```*_));
-#. Step: set variable/column names (setVarNames() (file _*```lib/setvarnames.R```*_)).
+1. Step: merge raw data (mergeTestTrain() (file _*```lib/mergetesttrain.R```*_));
+2. Step: extract mean & standard deviation (extVars() (file _*```lib/extvars.R```*_));
+3. Step: replace activity id with activity label/name (repIdWithLbl() (file _*```lib/repidwithlbl.R```*_));
+4. Step: set variable/column names (setVarNames() (file _*```lib/setvarnames.R```*_)).
 
 Each of these chained functions is executed with corresponding parameters passed to it.
 
@@ -251,7 +241,7 @@ Each of these chained functions is executed with corresponding parameters passed
         repIdWithLbl(rdActLbl(), "activity_id", "id", "activity") %>%
         setVarNames("\\1\\6_\\3", "^([a-zA-Z]+)(\\.)(mean|std)(\\.\\.)(\\.*)([a-zA-Z]*)$")
 
-### Merging raw data ### {#merging_raw_data_messy}
+### Merging raw data
 
     #1: mergeTestTrain() %>%
 
@@ -290,7 +280,7 @@ Table: Sorting/matching key
 **Note**  
 When loading the raw test and train data from the corresponding files into the two R objects, the variable names are converted by calling the R function _*```make.names()```*_, hence any non-alphanumerical character (including "-", "+", ",") is getting replaced by a dot ("."), eg. _"tBodyAcc-mean()-X"_ becomes _"tBodyAcc.mean...X"_.
 
-### Extracting mean & standard deviation variables ### {#extract_mean_and_standard_deviation_messy}
+### Extracting mean & standard deviation variables
 
     #2: extVars(pattern="(subject_id|activity_id|\\.mean\\.\\.|\\.std\\.\\.|dataset)") %>%
 
@@ -326,7 +316,7 @@ Table: Value ranges of variables
 
 Table: Sorting/matching key
 
-### Replacing activity id with activity label/name ### {#replace_activity_id_with_label_messy}
+### Replacing activity id with activity label/name
 
     #3: repIdWithLbl(rdActLbl(), "activity_id", "id", "activity") %>%
 
@@ -368,7 +358,7 @@ Table: Value ranges of variables
 
 Table: Sorting/matching key
 
-### Setting variable names ### {#set_variable_names_messy}
+### Setting variable names
 
     #4: setVarNames("\\1\\6_\\3", "^([a-zA-Z]+)(\\.)(mean|std)(\\.\\.)(\\.*)([a-zA-Z]*)$")
 
@@ -390,7 +380,7 @@ This function is stored in file _*```lib/setvarnames.R```*_. The intention of th
 **Note**  
 Only the variable names are getting modified, not the underlying data structure, hence the structure of the resulting data.table is identical to the one of the [previous step](#replace_activity_id_with_label_tidy).
 
-## From messy data to tidy data ## {#from_messy_to_tidy_data}
+## From messy data to tidy data
 
 Having achieved the first objective, [creating the messy data set](#from_raw_to_messy_data), the next task at hand is transforming the messy data set into a tidy one. This is initiated by the main script (_*```run_analysis.R```*_) is executing the function _*```tidyDat```*_ (file _*```lib/tidydat.R```*_)
 
@@ -400,10 +390,10 @@ The outcome of this transformation is stored in the R object _*```dtTidy```*_ of
 
 Function _*```tidyDat```*_ is executing a sequence of chained functions in order to arrive at the intended result.
 
-#. Step: gather variables into key/value pairs;
-#. Step: split joint variable into individual ones;
-#. Step: set variable/column names;
-#. Setp: set variable/column class to _*```factor```*_.
+1. Step: gather variables into key/value pairs;
+2. Step: split joint variable into individual ones;
+3. Step: set variable/column names;
+4. Setp: set variable/column class to _*```factor```*_.
 
 Each of these chained functions is executed with corresponding parameters passed to it.
 
@@ -415,7 +405,7 @@ Each of these chained functions is executed with corresponding parameters passed
           as.data.table()
     rc[, (cnSplit) := lapply(.SD, as.factor), .SDcols=cnSplit]
 
-### Gathering variables into key/value pairs ### {#gather_variables_into_key_value_pairs_tidy}
+### Gathering variables into key/value pairs
 
     #1: gather(dtMessy, feature_value_type, quantity, -c(subject_id, activity, dataset)) %>%
 
@@ -447,7 +437,7 @@ Table: Value ranges of variables
 
 Table: Sorting/matching key
 
-### Splitting joint variable into individual ones ### {#splitting_joint_variables_tidy}
+### Splitting joint variable into individual ones
 
     #2: separate(feature_value_type, cnSplit) %>%
 
@@ -481,7 +471,7 @@ Table: Value ranges of variables
 
 Table: Sorting/matching key
 
-### Setting variable/column names ### {#set_variable_names_tidy}
+### Setting variable/column names
 
     #3: setnames(cnAll) %>%
 
@@ -490,7 +480,7 @@ By carrying out this step, each variable is getting assigned--where required--a 
 **Note**  
 Only the variable names are getting modified, not the underlying data structure, hence the structure of the resulting data.table is identical to the one of the [previous step](#splitting_joint_variables_tidy).
 
-### Setting variable/column class to _*```factor```*_ ### {#set_variable_class_tidy}
+### Setting variable/column class to _*```factor```*_
 
     #4: rc[, (cnSplit) := lapply(.SD, as.factor), .SDcols=cnSplit]
 
@@ -499,7 +489,7 @@ As a next step towards tidy data, variables _*```feature```*_ and _*```value_typ
 **Note**  
 Only the variable classes are getting modified, not the underlying data structure, hence the structure of the resulting data.table is identical to the one of the [previous step](#set_variable_names_tidy).
 
-## Exporting the tidy data set to a file ## {#exporing_tidy_data}
+## Exporting the tidy data set to a file
 
 Before submitting the various project files, the [tidy data set created in the previous step](#from_messy_to_tidy_data) will be written to a corresponding text file, which then subsequently will get submitted with the other relevant project files for evaluation and assessment.
 
@@ -511,11 +501,11 @@ The outcome of this export is stored in the file _*```UCI_HAR_Dataset_Tidy.txt``
 
 Function _*```wrDat```*_ is executing a sequence of functions in order to arrive at the intended result.
 
-#. Step: determine full filename;
-#. Step: determine file handling function to faciliate;
-#. Step: open connection to file for writing;
-#. Setp: write data set to file;
-#. Step: close connection to file written.
+1. Step: determine full filename;
+2. Step: determine file handling function to faciliate;
+3. Step: open connection to file for writing;
+4. Setp: write data set to file;
+5. Step: close connection to file written.
 
 This approach has been taken in order to allow for an export of the tidy data set both to a **plain-text** (uncompressed) **file**, as well as a **compressed archive**.
 
