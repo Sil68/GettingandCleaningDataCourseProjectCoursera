@@ -1,22 +1,12 @@
----
-title: "README.md"
-author: "Martin HEIN (m#)"
-date: "September 24th, 2015"
-output:
-  html_document:
-    toc: yes
-  pdf_document:
-    toc: yes
----
 **********
 
-# Purpose # {#purpose}
+# Purpose
 
 In the course of partaking an online class regarding data analysis, in particular the class _*Getting and Cleaning Data*_, one assignment was a project with the purpose to demonstrate the student's ability to collect, work with, and clean a data set. The objective is to prepare tidy data that can be used for later analysis.
 
 **********
 
-# Setting # {#setting}
+# Setting
 
 One of the most exciting areas in all of data science right now is wearable computing - see for example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained from the [Machine Learning Repository at UCI's][harhome].
 
@@ -24,24 +14,24 @@ The data for the project can be obtained from [here][hardata].
 
 **********
 
-# Assignment # {#assignment}
+# Assignment
 
 Create a R script called _*```run_analysis.R```*_ that carries out the following steps:
 
-#. Merges the training and the test sets to create one data set;
-#. Extracts only the measurements on the mean and standard deviation for each measurement;
-#. Uses descriptive activity names to name the activities in the data set;
-#. Appropriately labels the data set with descriptive variable names;
-#. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject;
-#. Export the tidy data set as a txt file created with write.table() using row.name=FALSE.
+1. Merges the training and the test sets to create one data set;
+2. Extracts only the measurements on the mean and standard deviation for each measurement;
+3. Uses descriptive activity names to name the activities in the data set;
+4. Appropriately labels the data set with descriptive variable names;
+5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject;
+6. Export the tidy data set as a txt file created with write.table() using row.name=FALSE.
 
 **********
 
-# Project # {#project}
+# Project
 
 The project comprises several directories and files, all of which are outlined below.
 
-## Directory structure ## {#directory_structure}
+## Directory structure
 
 In the project directory you will find several subdirectories.
 
@@ -111,23 +101,23 @@ Inside the _*```doc```*_ directory you can find the _*R Markdown Cheatsheet*_ an
 
 Any additional, supporting scripts or libraries are stored inside the _*```lib```*_ directory.
 
-## Files ## {#files}
+## Files
 
 For reasons of readability, testing, profiling, benchmarking and re-usability, instead of creating one single script file, an approach of splitting the script into several functions, each put into a corresponding script file of its own, placed into the _*```lib```*_ directory, has been taken.
 
-### run_analysis.R ### {#run_analysis.R}
+### run_analysis.R
 
 The main entry point, the main script, Upon which execution all required libraries and supporting scripts are getting loaded, as well as global variables and constants are defined.
 
 Steps carried out by this script:
 
-#. check for existence of the _*```doc```*_ and _*```data```*_ directories, and create these if required;
-#. download and uncompress data file (raw data) if not already available;
-#. create the messy data (merge train and test data sets), and store these in data.table _*```dtMessy```*_;
-#. create tidy data from messy data, and store these in data.table _*```dtTidy```*_;
-#. write the messy and tidy data sets to corresponding text files located in the _*```data```*_ directory.
+1. check for existence of the _*```doc```*_ and _*```data```*_ directories, and create these if required;
+2. download and uncompress data file (raw data) if not already available;
+3. create the messy data (merge train and test data sets), and store these in data.table _*```dtMessy```*_;
+4. create tidy data from messy data, and store these in data.table _*```dtTidy```*_;
+5. write the messy and tidy data sets to corresponding text files located in the _*```data```*_ directory.
 
-### lib/chkdir.R ### {#chkdir.R}
+### lib/chkdir.R
 
 Check whether a specific directory is already existing, and if not create that directory.
 
@@ -145,7 +135,7 @@ Table: Input parameter
 
 Table: Output value
 
-### lib/dldat.R ### {#dldat.R}
+### lib/dldat.R
 
 Download data into indicated directory, expand if requested, and rename as specified.
 
@@ -170,7 +160,7 @@ Table: Output value
 Case #1) _*```dlname```*_, _*```dldir```*_, _*```fname```*_ have to be of identical length, -or-  
 Case #2) _*```dlname```*_ and _*```fname```*_ have to be of identical length, and _*```dldir```*_ has to be of length 1.
 
-### lib/extvars.R ### {#extvars.R}
+### lib/extvars.R
 
 Extract specific variable from data set.
 
@@ -192,7 +182,7 @@ Table: Output value
 **Note**  
 If both _*```vars```*_ and _*```pattern```*_ are non-NULL, only _*```vars```*_ will be taken into account.
 
-### lib/mergetesttrain.R ### {#mergetesttrain.R}
+### lib/mergetesttrain.R
 
 Merge test and train data.
 
@@ -215,7 +205,7 @@ Case #1) _*```dtTest```*_ and _*```dtTrain```*_ are omitted -> both correspondin
 Case #2) _*```dtTest```*_ or _*```dtTrain```*_ are omitted -> corresponding reading function for the omitted data set is executed;  
 Case #3) _*```dtTest```*_ and _*```dtTrain```*_ are provided -> only a merge is getting carried out.
 
-### lib/messydat.R ### {#messydat.R}
+### lib/messydat.R
 
 Create (merge) messy data from raw data.
 
@@ -232,7 +222,7 @@ Table: Input parameter
 
 Table: Output value
 
-### lib/rdactlbl.R ### {#rdactlbl.R}
+### lib/rdactlbl.R
 
 Read activity label data.
 
@@ -249,7 +239,7 @@ Table: Input parameter
 
 Table: Output value
 
-### lib/rdfeatlbl.R ### {#rdfeatlbl.R}
+### lib/rdfeatlbl.R
 
 Read feature label data.
 
@@ -266,7 +256,7 @@ Table: Input parameter
 
 Table: Output value
 
-### lib/rdtest.R ### {#rdtest.R}
+### lib/rdtest.R
 
 Read test data.
 
@@ -283,7 +273,7 @@ Table: Input parameter
 
 Table: Output value
 
-### lib/rdtrain.R ### {#rdtrain.}
+### lib/rdtrain.R
 
 Read train data.
 
@@ -300,7 +290,7 @@ Table: Input parameter
 
 Table: Output value
 
-### lib/repidwithlbl.R ### {#repidwithlbl.R}
+### lib/repidwithlbl.R
 
 Replace id with label.
 
@@ -327,7 +317,7 @@ Table: Output value
 + all of _*```dtSrc```*_, _*```dtLbl```*_, _*```cnSrcId```*_, _*```cnLblId```*_, _*```cnLblLbl```*_ have to be specified, and a non-NULL value has to be provided for each of these;
 + if the id variable/column gets removed, the new key will be the old key but with the new variable/column instead; otherwise the old key will remain.
 
-### lib/setvarnames.R ### {#setvarnames.R}
+### lib/setvarnames.R
 
 Set variable/column names.
 
@@ -354,7 +344,7 @@ Table: Output value
 + if pattern is also provided (and non-NULL), all variable/column names matching the pattern will be amended by replacing the matched pattern with the content of _*```cnVars```*_;
 + any exsting sorting/matching key will be amended accordingly.
 
-### lib/tidydat.R ### {#tidydat.R}
+### lib/tidydat.R
 
 Tidy up messy data.
 
@@ -371,7 +361,7 @@ Table: Input parameter
 
 Table: Output value
 
-### lib/wrdat.R ### {#wrdat.R}
+### lib/wrdat.R
 
 Export data set to file.
 
